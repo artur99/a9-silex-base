@@ -20,7 +20,11 @@ $app['conf.url_path'] = function($app){
     return $app['request']->getBasePath();
 };
 
-$config = Yaml::parse($app['conf.path']."/app/conf.yaml");
+$config = Yaml::parse(@file_get_contents($app['conf.path']."/app/conf.yaml"));
+if(!$config){
+    throw new \Exception('Config file not defined');
+}
+
 
 foreach($config as $k=>$v){
     $app[$k]=$v;
