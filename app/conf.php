@@ -83,7 +83,8 @@ function global_patches($app){
 $app['csrf'] = $app->share(function () {
     return new CsrfTokenManager();
 });
-$app['twig'] = $app->share($app->extend('twig', function($twig,$app){
+
+$app['twig'] = $app->extend('twig', function($twig,$app){
     $twig->addExtension(new Twig_Extensions_Extension_Text());
     $twig->addFunction(new Twig_SimpleFunction('asset', function ($asset)use($app){
         if(strpos($asset, '://') !== false) return $asset;
@@ -126,16 +127,16 @@ $app['twig'] = $app->share($app->extend('twig', function($twig,$app){
         return Misc\MiscClass::shorten($text);
     }));
     return $twig;
-}));
-$app['user'] = $app->share(function() use ($app) {
-    return new user($app);
 });
+$app['user'] = function() use ($app) {
+    return new user($app);
+};
 
-$app['executers'] = $app->share(function() use ($app) {
+$app['executers'] = function() use ($app) {
     return [
         'user' => new \DaySplit\Executers\UserExecuter($app['db']),
     ];
-});
+};
 
 
 $app->before(function ($request)use($app) {
