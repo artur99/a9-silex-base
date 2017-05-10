@@ -80,9 +80,9 @@ function global_patches($app){
     }
 }
 
-$app['csrf'] = $app->share(function () {
+$app['csrf'] = function () {
     return new CsrfTokenManager();
-});
+};
 
 $app['twig'] = $app->extend('twig', function($twig,$app){
     $twig->addExtension(new Twig_Extensions_Extension_Text());
